@@ -9,6 +9,10 @@ import Index from "./pages/Index";
 import Products from "./pages/Products";
 import Details from "./pages/Details";
 import NotFound from "./pages/NotFound";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 import AiChat from "./pages/AiChat";
 import Settings from "./pages/Settings";
 
@@ -24,6 +28,10 @@ const App = () => (
           {/* Public routes */}
           <Route path="/" element={<Landing />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
           
           {/* App routes */}
           <Route path="/app" element={<Index />} />
