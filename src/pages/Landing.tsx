@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  Shield, Bot, Clock, Package, ChevronRight, Check, 
-  Users, Star, Sparkles, ArrowRight, BarChart3
+import {
+  Shield, Bot, Clock, Package, ChevronRight, Check,
+  Users, Star, Sparkles, ArrowRight, BarChart3, Bell
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -41,65 +41,123 @@ const Landing: React.FC = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent" />
+      <section className="relative py-32 overflow-hidden bg-gradient-to-b from-primary/10 via-background to-background">
+        {/* Background Effects */}
+        <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(68,68,68,.2)_50%,transparent_75%,transparent_100%)] bg-[length:20px_20px] opacity-20" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent animate-gradient" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-conic from-primary/30 via-primary/5 to-transparent blur-3xl opacity-30 animate-slow-spin" />
+        
+        {/* Content Container */}
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center gap-12">
-            <div className="flex-1 text-center md:text-left">
-              <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary mb-6">
-                <Sparkles className="w-4 h-4 mr-2" />
-                <span className="text-sm font-medium">AI-Powered Warranty Management</span>
+            {/* Left Column - Text Content */}
+            <div className="flex-1 text-center md:text-left relative z-10">
+              <div className="inline-flex items-center px-6 py-3 rounded-full bg-primary/10 text-primary mb-8 animate-fade-in hover:bg-primary/20 transition-colors group cursor-pointer">
+                <Sparkles className="w-5 h-5 mr-3 group-hover:animate-pulse" />
+                <span className="text-sm font-semibold tracking-wide">AI-Powered Warranty Management</span>
               </div>
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
-                Never Lose Track of Your Product Warranties
+              <h1 className="text-5xl md:text-7xl font-bold mb-8 animate-fade-up">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/90 to-primary/70">
+                  Never Lose Track
+                </span>
+                <br />
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary/90 via-primary/80 to-primary/60">
+                  of Your Product Warranties
+                </span>
               </h1>
-              <p className="text-xl text-muted-foreground mb-8">
-                WarrantyKeeper helps you manage all your product warranties in one place, 
-                with AI-powered insights and timely reminders.
+              <p className="text-xl md:text-2xl text-muted-foreground/90 mb-10 animate-fade-up delay-100 leading-relaxed max-w-2xl">
+                WarrantyKeeper helps you manage all your product warranties in one place,
+                with <span className="text-primary font-medium">AI-powered insights</span> and <span className="text-primary font-medium">timely reminders</span>.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                <Button
-                  asChild
-                  size="lg"
-                  className="w-full sm:w-auto"
-                >
+              <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start animate-fade-up delay-200">
+                <Button asChild size="lg" className="w-full sm:w-auto">
                   <Link to="/signup">
                     Create Free Account
                     <ChevronRight className="ml-2 w-5 h-5" />
                   </Link>
                 </Button>
-                <Button
-                  asChild
-                  size="lg"
-                  variant="outline"
-                  className="w-full sm:w-auto"
-                >
-                  <Link to="/pricing">
-                    View Pricing
-                  </Link>
+                <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
+                  <Link to="/pricing">View Pricing</Link>
                 </Button>
               </div>
             </div>
-            <div className="flex-1 relative">
-              <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 p-8">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Shield className="w-32 h-32 text-primary/20" />
-                </div>
-                <div className="relative grid grid-cols-2 gap-4">
-                  {[
-                    { icon: Package, label: 'Product Tracking' },
-                    { icon: Bot, label: 'AI Assistant' },
-                    { icon: Clock, label: 'Expiry Alerts' },
-                    { icon: BarChart3, label: 'Analytics' }
-                  ].map((item, index) => (
-                    <div
-                      key={index}
-                      className="glass rounded-xl p-4 flex flex-col items-center justify-center text-center"
-                    >
-                      <item.icon className="w-8 h-8 mb-2 text-primary" />
-                      <span className="text-sm font-medium">{item.label}</span>
+
+            {/* Right Column - Dashboard Preview */}
+            <div className="flex-1 relative z-10">
+              <div className="relative">
+                {/* Floating Elements */}
+                <div className="absolute -top-12 -right-12 w-48 h-48 bg-primary/5 rounded-full blur-3xl animate-pulse" />
+                <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-primary/10 rounded-full blur-2xl animate-pulse delay-300" />
+                
+                {/* Dashboard Preview */}
+                <div className="relative rounded-2xl bg-gradient-to-br from-background via-muted to-muted/80 shadow-2xl border border-primary/10 animate-float overflow-hidden">
+                  {/* Window Controls */}
+                  <div className="h-12 bg-background/80 backdrop-blur-sm border-b border-primary/5 flex items-center px-4">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
+                      <div className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
+                      <div className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors" />
                     </div>
-                  ))}
+                  </div>
+                  
+                  {/* Dashboard Content */}
+                  <div className="p-6">
+                    {/* Stats Grid */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                      {[
+                        { icon: Package, label: 'Products', value: '24' },
+                        { icon: Clock, label: 'Active', value: '18' },
+                        { icon: Bot, label: 'Expiring', value: '3' },
+                        { icon: BarChart3, label: 'Total Value', value: '$12.4k' }
+                      ].map((stat, index) => (
+                        <div
+                          key={index}
+                          className="bg-background/50 backdrop-blur-sm rounded-xl p-4 hover:bg-background/80 transition-all duration-300 hover:scale-105 hover:shadow-lg border border-primary/5 hover:border-primary/10 group"
+                        >
+                          <stat.icon className="w-8 h-8 mb-3 text-primary/80 group-hover:text-primary group-hover:scale-110 transition-all duration-300" />
+                          <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">{stat.value}</div>
+                          <div className="text-sm text-muted-foreground/80 group-hover:text-muted-foreground transition-colors">{stat.label}</div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Recent Products */}
+                    <div className="bg-background/50 backdrop-blur-sm rounded-xl p-6 border border-primary/5">
+                      <h3 className="text-sm font-medium mb-4 flex items-center">
+                        <Package className="w-4 h-4 mr-2 text-primary/70" />
+                        Recent Products
+                      </h3>
+                      <div className="space-y-3">
+                        {[
+                          { name: 'MacBook Pro M2', date: 'Jan 26, 2025', status: 'active' },
+                          { name: 'Samsung QLED TV', date: 'Nov 27, 2024', status: 'expiring' },
+                          { name: 'Sony Headphones', date: 'Dec 15, 2024', status: 'active' }
+                        ].map((product, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center justify-between p-3 rounded-lg hover:bg-background/80 transition-all duration-300 group border border-transparent hover:border-primary/10"
+                          >
+                            <div className="flex items-center space-x-3">
+                              <div className="w-10 h-10 rounded-lg bg-primary/5 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+                                <Package className="w-5 h-5 text-primary/70 group-hover:text-primary group-hover:scale-110 transition-all duration-300" />
+                              </div>
+                              <div>
+                                <div className="font-medium group-hover:text-primary transition-colors">{product.name}</div>
+                                <div className="text-sm text-muted-foreground/80">{product.date}</div>
+                              </div>
+                            </div>
+                            <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+                              product.status === 'active'
+                                ? 'bg-green-100/50 text-green-700 group-hover:bg-green-100'
+                                : 'bg-yellow-100/50 text-yellow-700 group-hover:bg-yellow-100'
+                            } transition-colors`}>
+                              {product.status}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -107,57 +165,236 @@ const Landing: React.FC = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-12 border-y bg-muted/30">
+      {/* Hidden Benefits Section */}
+      <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { number: '10K+', label: 'Active Users' },
-              { number: '100K+', label: 'Products Tracked' },
-              { number: '50K+', label: 'Warranties Managed' },
-              { number: '99%', label: 'User Satisfaction' },
-            ].map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-3xl font-bold text-primary mb-1">{stat.number}</div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold mb-4">Discover Hidden Product Benefits</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Our AI technology helps you uncover valuable warranties and consumer benefits you might not know about
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-background rounded-xl p-8 hover:shadow-lg transition-all">
+              <div className="p-3 bg-primary/10 rounded-full w-fit mb-6">
+                <Sparkles className="w-6 h-6 text-primary" />
               </div>
-            ))}
+              <h3 className="text-xl font-semibold mb-3">Hidden Warranty Discovery</h3>
+              <p className="text-muted-foreground mb-6">
+                Our AI scans your products and identifies hidden warranties, extended coverage options,
+                and manufacturer guarantees you might have missed. Many products come with additional
+                protection you didn't know about!
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-center text-sm">
+                  <Check className="w-4 h-4 text-primary mr-2" />
+                  Credit card extended warranties
+                </li>
+                <li className="flex items-center text-sm">
+                  <Check className="w-4 h-4 text-primary mr-2" />
+                  Store protection plans
+                </li>
+                <li className="flex items-center text-sm">
+                  <Check className="w-4 h-4 text-primary mr-2" />
+                  Manufacturer satisfaction guarantees
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-background rounded-xl p-8 hover:shadow-lg transition-all">
+              <div className="p-3 bg-primary/10 rounded-full w-fit mb-6">
+                <Star className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Consumer Benefits Analysis</h3>
+              <p className="text-muted-foreground mb-6">
+                Beyond warranties, we help you discover additional consumer benefits and protections
+                that come with your purchases. Get the most value from your products with our
+                comprehensive analysis.
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-center text-sm">
+                  <Check className="w-4 h-4 text-primary mr-2" />
+                  Price protection benefits
+                </li>
+                <li className="flex items-center text-sm">
+                  <Check className="w-4 h-4 text-primary mr-2" />
+                  Return period extensions
+                </li>
+                <li className="flex items-center text-sm">
+                  <Check className="w-4 h-4 text-primary mr-2" />
+                  Repair and replacement options
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">Everything You Need to Stay Protected</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+      <section className="py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_500px_at_50%_200px,var(--primary-50),transparent)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background" />
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/5 text-primary mb-6 border border-primary/10">
+              <Star className="w-4 h-4 mr-2" />
+              <span className="text-sm font-medium">Premium Features</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/90 to-primary/70">
+              Everything You Need to Stay Protected
+            </h2>
+            <p className="text-xl text-muted-foreground/90 max-w-2xl mx-auto leading-relaxed">
               Powerful features to help you manage and protect your investments with ease.
+              Built for <span className="text-primary font-medium">simplicity</span> and <span className="text-primary font-medium">efficiency</span>.
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                icon: Package,
-                title: "Smart Product Management",
-                description: "Add products easily with manual entry, URL import, or our intelligent AI detection system. Keep all your product information organized in one place.",
-                features: ["Automatic data extraction", "Multiple import options", "Organized categories"]
+                icon: Sparkles,
+                title: "Hidden Warranty Discovery",
+                description: "Our AI technology automatically scans your products and discovers hidden warranties, extended coverage options, and benefits you might have missed.",
+                features: ["Credit card extended warranties", "Store protection plans", "Manufacturer guarantees"],
+                preview: (
+                  <div className="relative">
+                    <div className="absolute -top-6 -right-6 w-24 h-24 bg-primary/5 rounded-full blur-2xl animate-pulse" />
+                    <div className="space-y-3">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                          <Package className="w-6 h-6 text-primary" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="h-2 bg-primary/20 rounded w-2/3" />
+                          <div className="h-2 bg-primary/10 rounded w-1/2 mt-2" />
+                        </div>
+                      </div>
+                      <div className="p-3 bg-background/50 rounded-lg border border-primary/10">
+                        <div className="text-xs text-primary mb-1">Hidden Warranty Found!</div>
+                        <div className="text-sm">Your credit card provides an additional year of coverage</div>
+                      </div>
+                    </div>
+                  </div>
+                )
               },
               {
                 icon: Bot,
-                title: "AI-Powered Assistant",
-                description: "Get instant warranty information and smart recommendations using our advanced AI assistant. Never miss important details again.",
-                features: ["Warranty analysis", "Smart recommendations", "24/7 assistance"]
+                title: "AI-Powered Analysis",
+                description: "Our intelligent assistant analyzes your purchases to uncover valuable benefits and protections you didn't know you had.",
+                features: ["Smart benefit detection", "Coverage recommendations", "Value optimization"],
+                preview: (
+                  <div className="space-y-3">
+                    <div className="flex items-start space-x-3">
+                      <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
+                        <Bot className="w-4 h-4 text-primary" />
+                      </div>
+                      <div className="flex-1 bg-muted rounded-lg p-2 text-sm">
+                        I found several benefits for your recent purchase!
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2 opacity-50">
+                      <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                      <div className="w-2 h-2 bg-primary rounded-full animate-pulse delay-100" />
+                      <div className="w-2 h-2 bg-primary rounded-full animate-pulse delay-200" />
+                    </div>
+                  </div>
+                )
               },
               {
                 icon: Clock,
-                title: "Proactive Tracking",
-                description: "Stay ahead with automated reminders and comprehensive warranty tracking. Get notified before warranties expire.",
-                features: ["Expiration alerts", "Coverage tracking", "Renewal reminders"]
+                title: "Smart Notifications",
+                description: "Stay ahead with intelligent reminders about your coverage. We'll notify you about expiring warranties and opportunities to extend protection.",
+                features: ["Timely alerts", "Coverage optimization", "Renewal recommendations"],
+                preview: (
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between p-2 rounded bg-background/50 border border-yellow-500/20">
+                      <div className="flex items-center space-x-3">
+                        <Bell className="w-5 h-5 text-yellow-500" />
+                        <div>
+                          <div className="text-sm font-medium">TV Warranty Expiring</div>
+                          <div className="text-xs text-muted-foreground">30 days remaining - Extend now</div>
+                        </div>
+                      </div>
+                      <div className="w-2 h-2 rounded-full bg-yellow-500" />
+                    </div>
+                    <div className="flex items-center justify-between p-2 rounded bg-background/50 border border-green-500/20">
+                      <div className="flex items-center space-x-3">
+                        <Shield className="w-5 h-5 text-green-500" />
+                        <div>
+                          <div className="text-sm font-medium">Extended Coverage Available</div>
+                          <div className="text-xs text-muted-foreground">Special offer expires soon</div>
+                        </div>
+                      </div>
+                      <div className="w-2 h-2 rounded-full bg-green-500" />
+                    </div>
+                  </div>
+                )
               }
             ].map((feature, index) => (
-              <div key={index} className="glass rounded-xl p-8 hover:shadow-lg transition-all">
+              <div
+                key={index}
+                className="glass rounded-xl p-8 hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:bg-background/80 group relative overflow-hidden border border-primary/5 hover:border-primary/20"
+              >
+                <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-all" />
+                
+                {/* Feature Preview */}
+                <div className="bg-background/50 backdrop-blur-sm rounded-xl p-4 mb-6 group-hover:bg-background/80 transition-all relative min-h-[160px] flex items-center">
+                  {index === 0 && (
+                    <div className="space-y-3">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                          <Package className="w-6 h-6 text-primary" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="h-2 bg-primary/20 rounded w-2/3" />
+                          <div className="h-2 bg-primary/10 rounded w-1/2 mt-2" />
+                        </div>
+                      </div>
+                      <div className="h-[1px] bg-border" />
+                      <div className="flex justify-between text-xs text-muted-foreground">
+                        <span>Serial Number</span>
+                        <span>Purchase Date</span>
+                        <span>Status</span>
+                      </div>
+                    </div>
+                  )}
+                  {index === 1 && (
+                    <div className="space-y-3">
+                      <div className="flex items-start space-x-3">
+                        <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
+                          <Bot className="w-4 h-4 text-primary" />
+                        </div>
+                        <div className="flex-1 bg-muted rounded-lg p-2 text-sm">
+                          I can help you track and manage your warranties
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2 opacity-50">
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse delay-100" />
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse delay-200" />
+                      </div>
+                    </div>
+                  )}
+                  {index === 2 && (
+                    <div className="space-y-2">
+                      {[
+                        { name: 'TV Warranty', days: 30, color: 'yellow' },
+                        { name: 'Laptop Coverage', days: 60, color: 'green' }
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-center justify-between p-2 rounded bg-background/50">
+                          <div>
+                            <div className="text-sm font-medium">{item.name}</div>
+                            <div className="text-xs text-muted-foreground">Expires in {item.days} days</div>
+                          </div>
+                          <div className={`w-2 h-2 rounded-full bg-${item.color}-500`} />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                
                 <div className="p-3 bg-primary/10 rounded-full w-fit mb-6">
                   <feature.icon className="w-6 h-6 text-primary" />
                 </div>
@@ -177,74 +414,39 @@ const Landing: React.FC = () => {
         </div>
       </section>
 
-      {/* Why Choose WarrantyKeeper */}
-      <section className="py-20 bg-muted/50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">Why Choose WarrantyKeeper</h2>
-            <p className="text-xl text-muted-foreground">
-              Simple, smart, and secure warranty management for everyone
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-background rounded-xl p-8 hover:shadow-lg transition-all">
-              <div className="p-3 bg-primary/10 rounded-full w-fit mb-6">
-                <Shield className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Secure & Private</h3>
-              <p className="text-muted-foreground">
-                Your warranty information is protected with industry-standard security.
-                We prioritize your privacy and data protection.
-              </p>
-            </div>
-
-            <div className="bg-background rounded-xl p-8 hover:shadow-lg transition-all">
-              <div className="p-3 bg-primary/10 rounded-full w-fit mb-6">
-                <Bot className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">AI-Powered Insights</h3>
-              <p className="text-muted-foreground">
-                Our AI assistant helps you understand warranty terms, get recommendations,
-                and make informed decisions about your product protection.
-              </p>
-            </div>
-
-            <div className="bg-background rounded-xl p-8 hover:shadow-lg transition-all">
-              <div className="p-3 bg-primary/10 rounded-full w-fit mb-6">
-                <Clock className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Never Miss a Deadline</h3>
-              <p className="text-muted-foreground">
-                Get timely reminders before warranties expire. Stay on top of your
-                coverage and protect your investments effectively.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="glass rounded-2xl p-12 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent" />
+      <section className="py-32 px-4">
+        <div className="container mx-auto">
+          <div className="glass rounded-3xl p-16 relative overflow-hidden border border-primary/10">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_100px,var(--primary-50),transparent)]" />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/5 to-transparent animate-gradient" />
+            <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(68,68,68,.1)_50%,transparent_75%,transparent_100%)] bg-[length:16px_16px] opacity-20" />
             <div className="relative">
               <div className="max-w-2xl mx-auto text-center">
-                <h2 className="text-3xl font-bold mb-6">Ready to Get Started?</h2>
-                <p className="text-xl text-muted-foreground mb-8">
-                  Join thousands of users who trust WarrantyKeeper to protect their investments.
-                  Start managing your warranties today!
+                <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/5 text-primary mb-6 border border-primary/10">
+                  <Users className="w-4 h-4 mr-2" />
+                  <span className="text-sm font-medium">Join 10,000+ Users</span>
+                </div>
+                <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/90 to-primary/70">
+                  Ready to Protect Your Investments?
+                </h2>
+                <p className="text-xl text-muted-foreground/90 mb-10 max-w-2xl mx-auto leading-relaxed">
+                  Join thousands of users who trust WarrantyKeeper to safeguard their purchases.
+                  Start your <span className="text-primary font-medium">free account</span> today and never miss a warranty again!
                 </p>
-                <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <div className="flex flex-col sm:flex-row justify-center gap-6">
                   <Link to="/signup">
-                    <Button size="lg" className="w-full sm:w-auto">
-                      Create Free Account
-                      <ArrowRight className="ml-2 w-5 h-5" />
+                    <Button size="lg" className="w-full sm:w-auto px-8 h-14 text-lg font-medium hover:scale-105 transition-transform">
+                      Get Started Free
+                      <ArrowRight className="ml-2 w-6 h-6" />
                     </Button>
                   </Link>
                   <Link to="/pricing">
-                    <Button size="lg" variant="outline" className="w-full sm:w-auto">
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="w-full sm:w-auto px-8 h-14 text-lg font-medium hover:bg-primary/5 transition-colors"
+                    >
                       View Pricing
                     </Button>
                   </Link>

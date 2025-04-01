@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Bot } from 'lucide-react';
+import { Bot, Search, Shield, Calculator, FileText, Scale, Book } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
 import { Input } from './ui/input';
@@ -59,9 +59,58 @@ Recommendation: Consider getting an extended warranty if this is a high-value it
 
   return (
     <Card className="flex flex-col h-[calc(100vh-2rem)] m-4">
-      <div className="flex items-center gap-2 p-4 border-b">
-        <Bot className="w-5 h-5" />
-        <h2 className="text-lg font-semibold">Warranty AI Assistant</h2>
+      <div className="flex flex-col border-b">
+        <div className="flex items-center gap-2 p-4">
+          <Bot className="w-5 h-5" />
+          <h2 className="text-lg font-semibold">Warranty AI Assistant</h2>
+        </div>
+        <div className="px-6 py-6 bg-muted/30">
+          <h3 className="font-semibold mb-6 text-center text-lg">What can I help you with?</h3>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex items-start gap-3 p-4 bg-background hover:bg-muted/30 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md cursor-pointer group">
+              <Search className="w-5 h-5 text-primary mt-0.5 group-hover:scale-110 transition-transform duration-200" />
+              <div>
+                <p className="font-medium text-sm">Find Hidden Warranties</p>
+                <p className="text-xs text-muted-foreground/80">Discover coverage details for your products</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-4 bg-background hover:bg-muted/30 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md cursor-pointer group">
+              <Shield className="w-5 h-5 text-primary mt-0.5 group-hover:scale-110 transition-transform duration-200" />
+              <div>
+                <p className="font-medium text-sm">Extended Coverage</p>
+                <p className="text-xs text-muted-foreground/80">Check qualification for warranty programs</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-4 bg-background hover:bg-muted/30 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md cursor-pointer group">
+              <Calculator className="w-5 h-5 text-primary mt-0.5 group-hover:scale-110 transition-transform duration-200" />
+              <div>
+                <p className="font-medium text-sm">Smart Recommendations</p>
+                <p className="text-xs text-muted-foreground/80">Get advice based on product value and usage</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-4 bg-background hover:bg-muted/30 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md cursor-pointer group">
+              <FileText className="w-5 h-5 text-primary mt-0.5 group-hover:scale-110 transition-transform duration-200" />
+              <div>
+                <p className="font-medium text-sm">Terms & Conditions</p>
+                <p className="text-xs text-muted-foreground/80">Understand warranty details and exclusions</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-4 bg-background hover:bg-muted/30 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md cursor-pointer group">
+              <Scale className="w-5 h-5 text-primary mt-0.5 group-hover:scale-110 transition-transform duration-200" />
+              <div>
+                <p className="font-medium text-sm">Compare Options</p>
+                <p className="text-xs text-muted-foreground/80">Evaluate different warranty benefits</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-4 bg-background hover:bg-muted/30 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md cursor-pointer group">
+              <Book className="w-5 h-5 text-primary mt-0.5 group-hover:scale-110 transition-transform duration-200" />
+              <div>
+                <p className="font-medium text-sm">Coverage Types</p>
+                <p className="text-xs text-muted-foreground/80">Learn about manufacturer vs extended warranties</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <ScrollArea className="flex-1 p-4">

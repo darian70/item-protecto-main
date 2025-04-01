@@ -15,6 +15,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import AiChat from "./pages/AiChat";
 import Settings from "./pages/Settings";
+import Payment from "./pages/Payment";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/signup" element={<SignUp />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/payment" element={<Payment />} />
           
           {/* App routes */}
           <Route path="/app" element={<Index />} />

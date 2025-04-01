@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Bot, Upload } from 'lucide-react';
 import { Button } from '../ui/button';
-import { Card } from '../ui/card';
 import { Input } from '../ui/input';
 import { ScrollArea } from '../ui/scroll-area';
 import { Warranty } from '@/lib/types';
@@ -80,34 +79,57 @@ Would you like me to fill out the warranty form with this information?`;
   };
 
   return (
-    <Card className="mt-4">
-      <div className="flex items-center gap-2 p-4 border-b">
-        <Bot className="w-5 h-5" />
-        <h2 className="text-lg font-semibold">Warranty AI Assistant</h2>
+    <div className="overflow-hidden">
+      <div className="flex items-center gap-3 p-4 border-b">
+        <div className="bg-primary/10 p-2 rounded-lg">
+          <Bot className="w-5 h-5 text-primary" />
+        </div>
+        <div>
+          <h2 className="text-lg font-semibold">Warranty AI Assistant</h2>
+          <p className="text-sm text-muted-foreground">Let me help you discover and manage your warranties</p>
+        </div>
       </div>
 
-      <ScrollArea className="h-[300px] p-4">
-        <div className="space-y-4">
+      <ScrollArea className="h-[400px] px-4">
+        <div className="space-y-6 py-6">
           {messages.length === 0 ? (
-            <div className="text-center text-muted-foreground py-8">
-              Describe your warranty needs or upload a warranty document for analysis
+            <div className="text-center space-y-4 py-12">
+              <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
+                <Bot className="w-8 h-8 text-primary" />
+              </div>
+              <div>
+                <p className="text-lg font-medium mb-1">Welcome to Warranty Assistant</p>
+                <p className="text-muted-foreground">
+                  Describe your warranty needs or upload a document for analysis. I'll help you:
+                </p>
+                <ul className="text-sm text-muted-foreground mt-2 space-y-1">
+                  <li>• Find hidden warranties in your documents</li>
+                  <li>• Extract key warranty information</li>
+                  <li>• Get reminders before warranties expire</li>
+                </ul>
+              </div>
             </div>
           ) : (
             messages.map((message, index) => (
               <div
                 key={index}
-                className={`flex ${
+                className={`flex items-end gap-3 ${
                   message.type === 'user' ? 'justify-end' : 'justify-start'
                 }`}
               >
+                {message.type === 'bot' && (
+                  <div className="bg-primary/10 p-1.5 rounded-lg h-fit">
+                    <Bot className="w-4 h-4 text-primary" />
+                  </div>
+                )}
                 <div
-                  className={`max-w-[80%] rounded-lg p-3 ${
+                  className={`max-w-[80%] rounded-2xl p-4 ${
                     message.type === 'user'
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-muted'
+                      ? 'bg-primary text-primary-foreground rounded-br-none'
+                      : 'bg-muted rounded-bl-none'
                   }`}
                 >
-                  <pre className="whitespace-pre-wrap font-sans">
+                  <pre className="whitespace-pre-wrap font-sans text-sm">
                     {message.content}
                   </pre>
                 </div>
@@ -117,22 +139,23 @@ Would you like me to fill out the warranty form with this information?`;
         </div>
       </ScrollArea>
 
-      <form onSubmit={handleSubmit} className="p-4 border-t">
-        <div className="flex gap-2">
-          <Input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Describe your warranty needs or ask a question..."
-            className="flex-1"
-          />
-          <Button type="button" variant="outline" className="gap-2">
-            <Upload className="w-4 h-4" />
-            Upload
-          </Button>
-          <Button type="submit">Send</Button>
-        </div>
-      </form>
-    </Card>
+      <div className="border-t bg-card/50 backdrop-blur-sm">
+        <form onSubmit={handleSubmit} className="p-4">
+          <div className="flex gap-2">
+            <Input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Describe your warranty needs or ask a question..."
+              className="flex-1"
+            />
+            <Button type="button" variant="outline" size="icon">
+              <Upload className="w-4 h-4" />
+            </Button>
+            <Button type="submit">Send</Button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 

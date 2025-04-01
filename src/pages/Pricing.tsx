@@ -1,53 +1,110 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Shield, Check } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Shield, Check, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-const PricingTier = ({
-  name,
-  price,
-  description,
-  features,
-  recommended = false
-}: {
+interface PricingTierProps {
   name: string;
   price: string;
   description: string;
   features: string[];
   recommended?: boolean;
-}) => (
-  <div className={`
-    relative bg-background border rounded-xl p-6
-    ${recommended ? 'border-primary shadow-lg' : ''}
-  `}>
-    {recommended && (
-      <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-        <span className="bg-primary text-primary-foreground text-sm px-3 py-1 rounded-full">
-          Recommended
-        </span>
+}
+
+const PricingTier: React.FC<PricingTierProps> = ({
+  name,
+  price,
+  description,
+  features,
+  recommended = false
+}) => {
+  const navigate = useNavigate();
+
+  const handleSubscribe = (e: React.MouseEvent) => {
+    e.preventDefault();
+    console.log('Subscribe clicked:', { name, price });
+    
+    const baseUrl = window.location.origin;
+    const targetPath = price === 'Free' ? '/signup' : '/payment';
+    const fullUrl = `${baseUrl}${targetPath}`;
+    
+    console.log('Navigating to:', fullUrl);
+    
+    if (price === 'Free') {
+      window.location.href = fullUrl;
+    } else {
+      const planData = {
+        name,
+        price,
+        interval: 'month'
+      };
+      const searchParams = new URLSearchParams();
+      searchParams.set('plan', JSON.stringify(planData));
+      window.location.href = `${fullUrl}?${searchParams.toString()}`;
+    }
+  };
+
+  return (
+    <div className={`
+      relative bg-background border rounded-xl p-6
+      ${recommended ? 'border-primary shadow-lg' : ''}
+      flex flex-col min-h-[600px]
+    `}>
+      {recommended && (
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+          <span className="bg-primary text-primary-foreground text-sm px-3 py-1 rounded-full">
+            Recommended
+          </span>
+        </div>
+      )}
+      <h3 className="text-xl font-semibold mb-2">{name}</h3>
+      <div className="mb-4">
+        <span className="text-3xl font-bold">${price}</span>
+        {price !== 'Free' && <span className="text-muted-foreground">/month</span>}
       </div>
-    )}
-    <h3 className="text-xl font-semibold mb-2">{name}</h3>
-    <div className="mb-4">
-      <span className="text-3xl font-bold">${price}</span>
-      {price !== 'Free' && <span className="text-muted-foreground">/month</span>}
+      <p className="text-muted-foreground mb-6">{description}</p>
+      <ul className="space-y-3 flex-grow mb-8">
+        {features.map((feature, index) => (
+          <li key={index} className="flex items-center">
+            <Check className="w-5 h-5 text-primary mr-2 flex-shrink-0" />
+            <span>{feature}</span>
+          </li>
+        ))}
+      </ul>
+      <div className="mt-auto pt-8 relative z-10">
+        <Button
+          asChild
+          size="lg"
+          variant={recommended ? 'default' : 'outline'}
+          className={`
+            w-full h-14 text-lg font-medium relative
+            ${recommended ? 'bg-primary hover:bg-primary/90 text-primary-foreground' : 'hover:bg-muted'}
+            transition-all duration-300 transform hover:scale-[1.02]
+            before:absolute before:inset-0 before:rounded-md
+            ${recommended ? 'before:bg-primary/10' : 'before:bg-muted/50'}
+            before:opacity-0 hover:before:opacity-100 before:transition-opacity
+            shadow-sm hover:shadow-lg
+          `}
+        >
+          <Link
+            to={price === 'Free' ? '/signup' : '/payment'}
+            state={price !== 'Free' ? {
+              plan: {
+                name,
+                price,
+                interval: 'month'
+              }
+            } : undefined}
+            className="relative z-10 flex items-center justify-center gap-2"
+          >
+            {price === 'Free' ? 'Get Started' : 'Subscribe Now'}
+            {recommended && <ArrowRight className="w-5 h-5" />}
+          </Link>
+        </Button>
+      </div>
     </div>
-    <p className="text-muted-foreground mb-6">{description}</p>
-    <ul className="space-y-3 mb-8">
-      {features.map((feature, index) => (
-        <li key={index} className="flex items-center">
-          <Check className="w-5 h-5 text-primary mr-2 flex-shrink-0" />
-          <span>{feature}</span>
-        </li>
-      ))}
-    </ul>
-    <Link to="/login" className="block">
-      <Button className="w-full" variant={recommended ? 'default' : 'outline'}>
-        Get Started
-      </Button>
-    </Link>
-  </div>
-);
+  );
+};
 
 const Pricing: React.FC = () => {
   return (
@@ -61,8 +118,8 @@ const Pricing: React.FC = () => {
             </div>
             <span className="font-semibold text-lg">WarrantyKeeper</span>
           </Link>
-          <Link to="/login">
-            <Button>Get Started</Button>
+          <Link to="/signup">
+            <Button>Sign Up Free</Button>
           </Link>
         </div>
       </nav>

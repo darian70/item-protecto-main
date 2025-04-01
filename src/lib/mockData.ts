@@ -109,7 +109,7 @@ export const mockProducts: Product[] = [
     retailer: 'Williams-Sonoma',
     serialNumber: 'WS123456789',
     description: '5-Quart Stand Mixer, Empire Red',
-    imageUrl: 'https://images.pexels.com/photos/4112598/pexels-photo-4112598.jpeg',
+    imageUrl: 'https://images.pexels.com/photos/3637728/pexels-photo-3637728.jpeg',
     warranties: [
       {
         id: 'w5',

@@ -4,6 +4,13 @@ import { Link, useLocation } from 'react-router-dom';
 import { Home, Package, Settings, Search, Plus, MenuIcon, X, Bot } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
+interface NavItem {
+  name: string;
+  path: string;
+  icon: React.ReactNode;
+  subtitle?: string;
+}
+
 interface LayoutProps {
   children: React.ReactNode;
 }
@@ -13,10 +20,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const isMobile = useIsMobile();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
-  const navItems = [
+  const navItems: NavItem[] = [
     { name: 'Dashboard', path: '/app', icon: <Home className="w-5 h-5" /> },
     { name: 'Products', path: '/app/products', icon: <Package className="w-5 h-5" /> },
-    { name: 'AI Assistant', path: '/app/ai-chat', icon: <Bot className="w-5 h-5" /> },
+    {
+      name: 'Hidden warranties',
+      subtitle: 'Find new warranties / help with others',
+      path: '/app/ai-chat',
+      icon: <Bot className="w-5 h-5" />
+    },
     { name: 'Settings', path: '/app/settings', icon: <Settings className="w-5 h-5" /> },
   ];
 
@@ -109,7 +121,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   `}
                 >
                   {item.icon}
-                  <span className="ml-3">{item.name}</span>
+                  <div className="ml-3 flex flex-col">
+                    <span>{item.name}</span>
+                    {item.subtitle && (
+                      <span className="text-xs text-muted-foreground mt-0.5">{item.subtitle}</span>
+                    )}
+                  </div>
                 </Link>
               </li>
             ))}

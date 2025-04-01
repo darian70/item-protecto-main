@@ -66,12 +66,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       className="block"
     >
       <div className="glass card-hover rounded-xl overflow-hidden">
-        <div className="aspect-w-16 aspect-h-9 bg-muted relative">
+        <div className="aspect-square bg-muted relative">
           {product.imageUrl ? (
             <img 
               src={product.imageUrl} 
               alt={product.name} 
-              className="object-cover w-full h-full"
+              className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
               loading="lazy"
             />
           ) : (
