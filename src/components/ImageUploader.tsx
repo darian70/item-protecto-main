@@ -1,6 +1,6 @@
-
-import React, { useState, useRef } from 'react';
-import { UploadCloud, Image, X } from 'lucide-react';
+import React, { useState, useRef, useCallback } from 'react';
+import { UploadCloud, Camera, X } from 'lucide-react';
+import { Button } from './ui/button';
 
 interface ImageUploaderProps {
   onImageUpload: (file: File) => void;
@@ -10,7 +10,53 @@ interface ImageUploaderProps {
 const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUpload, previewUrl }) => {
   const [preview, setPreview] = useState<string | undefined>(previewUrl);
   const [isDragging, setIsDragging] = useState(false);
+  const [isCapturing, setIsCapturing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+
+  const stopCamera = useCallback(() => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+    setIsCapturing(false);
+  }, []);
+
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        streamRef.current = stream;
+        setIsCapturing(true);
+      }
+    } catch (err) {
+      console.error('Error accessing camera:', err);
+      alert('Unable to access camera. Please make sure you have granted camera permissions.');
+    }
+  };
+
+  const capturePhoto = () => {
+    if (videoRef.current) {
+      const canvas = document.createElement('canvas');
+      canvas.width = videoRef.current.videoWidth;
+      canvas.height = videoRef.current.videoHeight;
+      const ctx = canvas.getContext('2d');
+      
+      if (ctx) {
+        ctx.drawImage(videoRef.current, 0, 0);
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const file = new File([blob], 'camera-capture.jpg', { type: 'image/jpeg' });
+            setPreview(URL.createObjectURL(blob));
+            onImageUpload(file);
+            stopCamera();
+          }
+        }, 'image/jpeg');
+      }
+    }
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -50,7 +96,9 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUpload, previewUrl
   };
 
   const handleClick = () => {
-    fileInputRef.current?.click();
+    if (!isCapturing) {
+      fileInputRef.current?.click();
+    }
   };
 
   const handleRemoveImage = (e: React.MouseEvent) => {
@@ -64,9 +112,9 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUpload, previewUrl
   return (
     <div
       className={`
-        relative border-2 border-dashed rounded-lg p-6 transition-colors duration-300 ease-in-out
+        relative border-2 border-dashed rounded-lg transition-colors duration-300 ease-in-out
         ${isDragging ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'}
-        ${preview ? 'p-0 border-0' : ''}
+        ${preview || isCapturing ? 'p-0 border-0' : 'p-6'}
       `}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
@@ -81,16 +129,59 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUpload, previewUrl
         ref={fileInputRef}
       />
       
-      {!preview ? (
+      {!preview && !isCapturing ? (
         <div className="flex flex-col items-center justify-center py-4">
-          <div className="mb-3 p-3 rounded-full bg-primary/10">
-            <UploadCloud className="h-6 w-6 text-primary" />
+          <div className="flex gap-4 mb-4">
+            <div 
+              className="p-3 rounded-full bg-primary/10 cursor-pointer hover:bg-primary/20 transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                startCamera();
+              }}
+            >
+              <Camera className="h-6 w-6 text-primary" />
+            </div>
+            <div className="p-3 rounded-full bg-primary/10">
+              <UploadCloud className="h-6 w-6 text-primary" />
+            </div>
           </div>
-          <p className="text-sm font-medium">Drag and drop an image here, or click to browse</p>
+          <p className="text-sm font-medium">Take a photo or upload an image</p>
           <p className="text-xs text-muted-foreground mt-1">PNG, JPG or WEBP (max 5MB)</p>
         </div>
+      ) : isCapturing ? (
+        <div className="relative aspect-video rounded-lg overflow-hidden">
+          <video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+            <Button
+              size="sm"
+              variant="outline"
+              className="bg-background/80 backdrop-blur-sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                stopCamera();
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              size="sm"
+              className="bg-primary/90 hover:bg-primary"
+              onClick={(e) => {
+                e.stopPropagation();
+                capturePhoto();
+              }}
+            >
+              Capture
+            </Button>
+          </div>
+        </div>
       ) : (
-        <div className="relative w-full aspect-w-16 aspect-h-9 overflow-hidden rounded-lg">
+        <div className="relative w-full aspect-video overflow-hidden rounded-lg">
           <img
             src={preview}
             alt="Preview"

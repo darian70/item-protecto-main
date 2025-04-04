@@ -192,10 +192,28 @@ const Products: React.FC = () => {
       {showAddModal && (
         <AddProductModal
           onProductAdded={(newProduct) => {
+            // Extract warranty information from the description if it exists
+            const warrantyInfo = newProduct.description?.match(/Warranty Length: (.*?)\n\nWarranty Details: (.*)/);
             const productWithId: Product = {
               ...newProduct,
-              id: (products.length + 1).toString(), // Simple ID generation
-              warranties: [] // Initialize empty warranties array
+              id: (products.length + 1).toString(),
+              warranties: warrantyInfo ? [{
+                id: `w${products.length + 1}`,
+                type: 'manufacturer',
+                provider: newProduct.brand || 'Unknown',
+                startDate: newProduct.purchaseDate,
+                endDate: (() => {
+                  const endDate = new Date(newProduct.purchaseDate);
+                  const length = warrantyInfo[1];
+                  const years = length.match(/(\d+)\s*years?/i);
+                  const months = length.match(/(\d+)\s*months?/i);
+                  if (years) endDate.setFullYear(endDate.getFullYear() + parseInt(years[1]));
+                  if (months) endDate.setMonth(endDate.getMonth() + parseInt(months[1]));
+                  return endDate;
+                })(),
+                coverageDetails: warrantyInfo[2],
+                contactInfo: {}
+              }] : []
             };
             const updatedProducts = [...products, productWithId];
             setProducts(updatedProducts);

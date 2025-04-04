@@ -1,4 +1,4 @@
-
+2
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from "@/components/ui/use-toast";
@@ -37,17 +37,24 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ onProductAdded }) => 
     setStep('details');
   };
 
-  const handleUrlUpload = (url: string) => {
+  const handleUrlUpload = (data: {
+    productName: string;
+    warrantyLength: string;
+    purchaseDate: string;
+    warrantyDetails: string;
+  }) => {
     toast({
-      title: "URL received",
-      description: "Analyzing product from URL...",
+      title: "Warranty Information Found",
+      description: "AI has extracted the warranty details",
       duration: 3000,
     });
     
-    // Pre-fill form with the URL
+    // Pre-fill form with the AI-extracted data
     setProductFormData(prev => ({
       ...prev,
-      productUrl: url
+      name: data.productName,
+      purchaseDate: data.purchaseDate,
+      description: `Warranty Length: ${data.warrantyLength}\n\nWarranty Details: ${data.warrantyDetails}`,
     }));
     setStep('details');
   };

@@ -10,30 +10,33 @@ const Landing: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
-      <nav className="border-b">
+      <nav className="border-b backdrop-blur-md bg-background/70 sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="bg-primary text-primary-foreground rounded-md p-1.5">
+            <div className="bg-gradient-to-br from-primary via-secondary to-accent text-primary-foreground rounded-md p-1.5 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300">
               <Shield className="w-5 h-5" />
             </div>
-            <span className="font-semibold text-lg">WarrantyKeeper</span>
+            <span className="font-semibold text-lg bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">WarrantyKeeper</span>
           </div>
           <div className="flex items-center space-x-4">
             <Button
               asChild
               variant="ghost"
-              className="text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground hover:bg-primary/5 transition-all duration-300"
             >
               <Link to="/pricing">Pricing</Link>
             </Button>
             <Button
               asChild
               variant="ghost"
-              className="text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground hover:bg-primary/5 transition-all duration-300"
             >
               <Link to="/signin">Sign In</Link>
             </Button>
-            <Button asChild>
+            <Button
+              asChild
+              className="bg-gradient-to-r from-primary via-secondary to-accent hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
+            >
               <Link to="/signup">Sign Up</Link>
             </Button>
           </div>
@@ -41,11 +44,12 @@ const Landing: React.FC = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative py-32 overflow-hidden bg-gradient-to-b from-primary/10 via-background to-background">
+      <section className="relative py-32 overflow-hidden bg-gradient-to-b from-primary/5 via-background to-background">
         {/* Background Effects */}
         <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(68,68,68,.2)_50%,transparent_75%,transparent_100%)] bg-[length:20px_20px] opacity-20" />
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent animate-gradient" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-conic from-primary/30 via-primary/5 to-transparent blur-3xl opacity-30 animate-slow-spin" />
+        <div className="absolute inset-0 bg-gradient-to-br from-secondary/30 via-primary/20 to-accent/10 animate-gradient" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-conic from-secondary/40 via-primary/30 to-accent/20 blur-3xl opacity-40 animate-slow-spin" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_-100px,var(--primary-50),transparent)] opacity-30" />
         
         {/* Content Container */}
         <div className="container mx-auto px-4">
@@ -57,11 +61,11 @@ const Landing: React.FC = () => {
                 <span className="text-sm font-semibold tracking-wide">AI-Powered Warranty Management</span>
               </div>
               <h1 className="text-5xl md:text-7xl font-bold mb-8 animate-fade-up">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/90 to-primary/70">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent animate-gradient bg-[length:200%_auto]">
                   Never Lose Track
                 </span>
                 <br />
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary/90 via-primary/80 to-primary/60">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-secondary via-accent to-primary animate-gradient bg-[length:200%_auto] [animation-delay:0.2s]">
                   of Your Product Warranties
                 </span>
               </h1>
@@ -335,7 +339,7 @@ const Landing: React.FC = () => {
             ].map((feature, index) => (
               <div
                 key={index}
-                className="glass rounded-xl p-8 hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:bg-background/80 group relative overflow-hidden border border-primary/5 hover:border-primary/20"
+                className="glass rounded-xl p-8 hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:bg-gradient-to-br hover:from-background/90 hover:via-background/95 hover:to-background/80 group relative overflow-hidden border border-primary/5 hover:border-primary/20 hover:backdrop-blur-xl"
               >
                 <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-all" />
                 
@@ -417,10 +421,11 @@ const Landing: React.FC = () => {
       {/* CTA Section */}
       <section className="py-32 px-4">
         <div className="container mx-auto">
-          <div className="glass rounded-3xl p-16 relative overflow-hidden border border-primary/10">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_100px,var(--primary-50),transparent)]" />
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/5 to-transparent animate-gradient" />
+          <div className="glass rounded-3xl p-16 relative overflow-hidden border border-primary/20 hover:border-primary/30 transition-all duration-500 group">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_100px,var(--secondary-50),transparent)]" />
+            <div className="absolute inset-0 bg-gradient-to-br from-secondary/30 via-primary/20 to-accent/10 animate-gradient" />
             <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(68,68,68,.1)_50%,transparent_75%,transparent_100%)] bg-[length:16px_16px] opacity-20" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <div className="relative">
               <div className="max-w-2xl mx-auto text-center">
                 <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/5 text-primary mb-6 border border-primary/10">
@@ -436,16 +441,22 @@ const Landing: React.FC = () => {
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center gap-6">
                   <Link to="/signup">
-                    <Button size="lg" className="w-full sm:w-auto px-8 h-14 text-lg font-medium hover:scale-105 transition-transform">
-                      Get Started Free
-                      <ArrowRight className="ml-2 w-6 h-6" />
+                    <Button
+                      size="lg"
+                      className="w-full sm:w-auto px-8 h-14 text-lg font-medium hover:scale-105 transition-all duration-500 bg-gradient-to-r from-primary via-secondary to-accent hover:shadow-lg hover:shadow-primary/20 relative overflow-hidden group"
+                    >
+                      <span className="relative z-10 flex items-center justify-center">
+                        Get Started Free
+                        <ArrowRight className="ml-2 w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                      </span>
+                      <div className="absolute inset-0 bg-gradient-to-r from-secondary via-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     </Button>
                   </Link>
                   <Link to="/pricing">
                     <Button
                       size="lg"
                       variant="outline"
-                      className="w-full sm:w-auto px-8 h-14 text-lg font-medium hover:bg-primary/5 transition-colors"
+                      className="w-full sm:w-auto px-8 h-14 text-lg font-medium bg-background/50 backdrop-blur-sm hover:bg-background/80 hover:border-primary/30 transition-all duration-500 hover:shadow-lg"
                     >
                       View Pricing
                     </Button>

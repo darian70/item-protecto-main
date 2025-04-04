@@ -1,11 +1,17 @@
 
 import React from 'react';
-import { Plus, Upload, Link2 } from 'lucide-react';
+import { Plus, Upload, Bot } from 'lucide-react';
 import AiProductDetection from '../AiProductDetection';
+import AiUrlProcessor from './AiUrlProcessor';
 
 interface AddMethodSelectorProps {
   onManualAdd: () => void;
-  onUrlUpload: (url: string) => void;
+  onUrlUpload: (productData: {
+    productName: string;
+    warrantyLength: string;
+    purchaseDate: string;
+    warrantyDetails: string;
+  }) => void;
   onProductDetected: (productData: any) => void;
 }
 
@@ -14,15 +20,6 @@ const AddMethodSelector: React.FC<AddMethodSelectorProps> = ({
   onUrlUpload,
   onProductDetected
 }) => {
-  const handleUrlSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const url = formData.get('url') as string;
-    if (url) {
-      onUrlUpload(url);
-    }
-  };
-
   return (
     <div className="p-6">
       <div className="text-center mb-6">
@@ -43,18 +40,11 @@ const AddMethodSelector: React.FC<AddMethodSelectorProps> = ({
         
         <div className="flex flex-col items-center p-6 border rounded-lg hover:border-primary/50 hover:bg-primary/5 transition-all">
           <div className="p-3 rounded-full bg-primary/10 mb-3">
-            <Link2 className="w-5 h-5 text-primary" />
+            <Bot className="w-5 h-5 text-primary" />
           </div>
-          <span className="font-medium">URL Upload</span>
-          <form onSubmit={handleUrlSubmit} className="mt-2 w-full">
-            <input
-              type="url"
-              name="url"
-              placeholder="Enter product URL"
-              className="w-full px-3 py-1 text-sm border rounded"
-              required
-            />
-          </form>
+          <span className="font-medium">AI URL Upload</span>
+          <span className="text-xs text-muted-foreground mt-1 mb-3">Auto-extract warranty info</span>
+          <AiUrlProcessor onUrlProcessed={onUrlUpload} />
         </div>
 
         <div className="flex flex-col items-center p-6 border rounded-lg hover:border-primary/50 hover:bg-primary/5 transition-all">
