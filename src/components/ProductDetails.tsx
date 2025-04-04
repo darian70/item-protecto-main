@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+                 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Calendar, Clock, DollarSign, MapPin, Package,
@@ -86,8 +86,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   };
   
   return (
-    <div className="animate-fade-in h-[calc(100vh-4rem)] flex flex-col">
-      <div className="flex-1 overflow-hidden">
+    <div className="animate-fade-in flex flex-col">
+      <div className="flex-1">
         <div className="container mx-auto px-4 py-4 max-w-[1600px]">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             <div className="lg:col-span-4 h-fit sticky top-4">
@@ -164,14 +164,14 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
               </div>
             </div>
             
-            <div className="lg:col-span-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="flex flex-col h-[calc(100vh-8rem)] overflow-hidden bg-background/50 backdrop-blur-sm rounded-lg p-4">
-                <h2 className="text-xl font-semibold mb-4 sticky top-0 bg-background/50 backdrop-blur-sm z-10 -m-4 p-4 flex items-center gap-2 border-b">
+            <div className="lg:col-span-8 flex flex-col lg:flex-row gap-8 mt-8">
+              <div className="flex-1 flex flex-col bg-background/50 backdrop-blur-sm rounded-lg p-4">
+                <h2 className="text-xl font-semibold mb-4 bg-background/50 backdrop-blur-sm z-10 flex items-center gap-2 border-b pb-4">
                   <Clock className="w-5 h-5 text-primary" />
                   Warranty Information
                 </h2>
                 
-                <div className="flex-1 overflow-auto pr-4 space-y-4">
+                <div className="space-y-4">
                   {warranties.length === 0 ? (
                     <div className="glass rounded-xl p-6 text-center mt-4">
                       <p className="text-muted-foreground">No warranty information available</p>
@@ -276,12 +276,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
               </div>
               
               {/* AI Chat Box for Warranty Analysis */}
-              <div className="flex flex-col h-[calc(100vh-8rem)] overflow-hidden bg-background/50 backdrop-blur-sm rounded-lg p-4">
-                <h2 className="text-xl font-semibold mb-4 sticky top-0 bg-background/50 backdrop-blur-sm z-10 -m-4 p-4 flex items-center gap-2 border-b">
+              <div className="flex-1 flex flex-col bg-background/50 backdrop-blur-sm rounded-lg p-4">
+                <h2 className="text-xl font-semibold mb-4 bg-background/50 backdrop-blur-sm z-10 flex items-center gap-2 border-b pb-4">
                   <Bot className="w-5 h-5 text-primary" />
                   Warranty Assistant
                 </h2>
-                <div className="flex-1 glass rounded-xl border border-primary/10 overflow-hidden relative">
+                <div className="glass rounded-xl border border-primary/10 overflow-hidden relative h-[500px]">
                   <WarrantyChatBox onWarrantyDataDetected={handleWarrantyDataDetected} />
                 </div>
               </div>

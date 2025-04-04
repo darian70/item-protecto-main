@@ -46,7 +46,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
+    <div className="min-h-screen bg-background">
       {/* Mobile header */}
       {isMobile && (
         <header className="fixed top-0 inset-x-0 h-16 z-50 glass border-b flex items-center justify-between px-4">
@@ -136,7 +136,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
       {/* Main content */}
       <main className={`
-        flex-1 flex flex-col overflow-hidden
+        flex-1 flex flex-col
         ${isMobile ? 'pt-16' : ''}
       `}>
         {/* Top header with search (desktop only) */}
@@ -161,7 +161,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         )}
 
         {/* Scrollable content area */}
-        <div className="flex-1 overflow-auto py-6 px-6">
+        <div className="flex-1 py-6 px-6">
           <div className="animate-fade-in">
             {children}
           </div>
