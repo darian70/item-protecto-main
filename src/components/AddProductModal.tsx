@@ -1,4 +1,3 @@
-2
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from "@/components/ui/use-toast";
@@ -27,6 +26,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ onProductAdded }) => 
     description: '',
     imageUrl: '',
     productUrl: '',
+    warranty: null as any
   });
   
   const handleClose = () => {
@@ -75,6 +75,12 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ onProductAdded }) => 
       description: productFormData.description || undefined,
       imageUrl: productFormData.imageUrl || undefined,
       productUrl: productFormData.productUrl || undefined,
+      warranties: productFormData.warranty ? [
+        {
+          ...productFormData.warranty,
+          id: `w${Date.now()}`,
+        }
+      ] : []
     };
     
     // Pass the converted data to parent component

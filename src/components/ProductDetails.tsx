@@ -165,125 +165,112 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             </div>
             
             <div className="lg:col-span-8 flex flex-col lg:flex-row gap-8 mt-8">
-              <div className="flex-1 flex flex-col bg-background/50 backdrop-blur-sm rounded-lg p-4">
-                <h2 className="text-xl font-semibold mb-4 bg-background/50 backdrop-blur-sm z-10 flex items-center gap-2 border-b pb-4">
-                  <Clock className="w-5 h-5 text-primary" />
-                  Warranty Information
-                </h2>
-                
-                <div className="space-y-4">
-                  {warranties.length === 0 ? (
-                    <div className="glass rounded-xl p-6 text-center mt-4">
-                      <p className="text-muted-foreground">No warranty information available</p>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 gap-4">
-                      {warranties.map((warranty) => (
-                        <div
-                          key={warranty.id}
-                          className={`
-                            glass rounded-xl overflow-hidden transition-all h-full
-                            ${getWarrantyStatus(warranty.endDate) === 'active' ? 'border-l-4 border-l-green-500' :
-                              getWarrantyStatus(warranty.endDate) === 'expiring' ? 'border-l-4 border-l-amber-500' :
-                              'border-l-4 border-l-red-500'}
-                          `}
-                        >
-                          <div className="p-4 h-full flex flex-col min-h-[280px]">
-                            <div className="flex items-start justify-between mb-4">
-                              <div>
-                                <div className="flex items-center">
-                                  <h3 className="font-medium">
-                                    {warranty.provider} {warranty.type.charAt(0).toUpperCase() + warranty.type.slice(1)} Warranty
-                                  </h3>
-                                </div>
-                                <div className="mt-1">
-                                  <WarrantyStatus warranty={warranty} showDetails={true} />
-                                </div>
-                              </div>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleDownloadWarranty(warranty)}
-                                className="h-8"
-                              >
-                                <Download className="w-4 h-4 mr-1" />
-                                {warranty.documents?.length ? 'Download' : 'Request'}
-                              </Button>
-                            </div>
-
-                            <div className="flex-1 flex flex-col">
-                              {warranty.coverageDetails && (
-                                <div className="mb-4">
-                                  <h4 className="text-sm font-medium">Coverage Details</h4>
-                                  <p className="text-sm text-muted-foreground mt-1 line-clamp-3">
-                                    {warranty.coverageDetails}
-                                  </p>
-                                </div>
-                              )}
-
-                              <div className="mt-auto">
-                                <div className="border-t pt-4">
-                                  <h4 className="text-sm font-medium mb-2">Contact Information</h4>
-                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                    {warranty.contactInfo.phone && (
-                                      <a href={`tel:${warranty.contactInfo.phone}`} className="flex items-center text-sm text-primary">
-                                        <Phone className="w-4 h-4 mr-1.5" />
-                                        {warranty.contactInfo.phone}
-                                      </a>
-                                    )}
-                                    
-                                    {warranty.contactInfo.email && (
-                                      <a href={`mailto:${warranty.contactInfo.email}`} className="flex items-center text-sm text-primary">
-                                        <Mail className="w-4 h-4 mr-1.5" />
-                                        {warranty.contactInfo.email}
-                                      </a>
-                                    )}
-                                    
-                                    {warranty.contactInfo.website && (
-                                      <a href={warranty.contactInfo.website} target="_blank" rel="noopener noreferrer" className="flex items-center text-sm text-primary">
-                                        <Globe className="w-4 h-4 mr-1.5" />
-                                        Website
-                                      </a>
-                                    )}
+              <div className="flex-1 flex flex-col">
+                <div className="glass rounded-xl p-6">
+                  <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 border-b pb-4">
+                    <Clock className="w-5 h-5 text-primary" />
+                    Warranty Information
+                  </h2>
+                  
+                  <div className="space-y-4">
+                    {warranties.length === 0 ? (
+                      <div className="glass rounded-xl p-6 text-center mt-4">
+                        <p className="text-muted-foreground">No warranty information available</p>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 gap-4">
+                        {warranties.map((warranty) => (
+                          <div
+                            key={warranty.id}
+                            className={`
+                              glass rounded-xl overflow-hidden transition-all h-full
+                              ${getWarrantyStatus(warranty.endDate) === 'active' ? 'border-l-4 border-l-green-500' :
+                                getWarrantyStatus(warranty.endDate) === 'expiring' ? 'border-l-4 border-l-amber-500' :
+                                'border-l-4 border-l-red-500'}
+                            `}
+                          >
+                            <div className="p-4 h-full flex flex-col min-h-[280px]">
+                              <div className="flex items-start justify-between mb-4">
+                                <div>
+                                  <div className="flex items-center">
+                                    <h3 className="font-medium">
+                                      {warranty.provider} {warranty.type.charAt(0).toUpperCase() + warranty.type.slice(1)} Warranty
+                                    </h3>
+                                  </div>
+                                  <div className="mt-1">
+                                    <WarrantyStatus warranty={warranty} showDetails={true} />
                                   </div>
                                 </div>
-
-                                {warranty.documents && warranty.documents.length > 0 && (
-                                  <div className="mt-4 border-t pt-4">
-                                    <h4 className="text-sm font-medium mb-2">Documents</h4>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  onClick={() => handleDownloadWarranty(warranty)}
+                                >
+                                  <Download className="w-4 h-4" />
+                                </Button>
+                              </div>
+                              
+                              <div className="flex-1">
+                                <div className="space-y-4">
+                                  {warranty.coverageDetails && (
+                                    <div>
+                                      <h4 className="text-sm font-medium flex items-center gap-2">
+                                        <FileText className="w-4 h-4" />
+                                        Coverage Details
+                                      </h4>
+                                      <p className="mt-1 text-sm text-muted-foreground">
+                                        {warranty.coverageDetails}
+                                      </p>
+                                    </div>
+                                  )}
+                                  
+                                  <div>
+                                    <h4 className="text-sm font-medium mb-2">Contact Information</h4>
                                     <div className="space-y-2">
-                                      {warranty.documents.map((doc, index) => (
-                                        <button
-                                          key={index}
-                                          className="flex items-center text-sm text-primary w-full text-left hover:underline"
-                                          onClick={() => handleDownloadWarranty(warranty)}
-                                        >
-                                          <FileText className="w-4 h-4 mr-1.5" />
-                                          {doc}
-                                        </button>
-                                      ))}
+                                      {warranty.contactInfo.phone && (
+                                        <div className="flex items-center text-sm">
+                                          <Phone className="w-4 h-4 mr-2 text-muted-foreground" />
+                                          <a href={`tel:${warranty.contactInfo.phone}`} className="hover:underline">
+                                            {warranty.contactInfo.phone}
+                                          </a>
+                                        </div>
+                                      )}
+                                      
+                                      {warranty.contactInfo.email && (
+                                        <div className="flex items-center text-sm">
+                                          <Mail className="w-4 h-4 mr-2 text-muted-foreground" />
+                                          <a href={`mailto:${warranty.contactInfo.email}`} className="hover:underline">
+                                            {warranty.contactInfo.email}
+                                          </a>
+                                        </div>
+                                      )}
+                                      
+                                      {warranty.contactInfo.website && (
+                                        <div className="flex items-center text-sm">
+                                          <Globe className="w-4 h-4 mr-2 text-muted-foreground" />
+                                          <a href={warranty.contactInfo.website} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                                            Visit Website
+                                          </a>
+                                        </div>
+                                      )}
                                     </div>
                                   </div>
-                                )}
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
               
-              {/* AI Chat Box for Warranty Analysis */}
-              <div className="flex-1 flex flex-col bg-background/50 backdrop-blur-sm rounded-lg p-4">
-                <h2 className="text-xl font-semibold mb-4 bg-background/50 backdrop-blur-sm z-10 flex items-center gap-2 border-b pb-4">
-                  <Bot className="w-5 h-5 text-primary" />
-                  Warranty Assistant
-                </h2>
-                <div className="glass rounded-xl border border-primary/10 overflow-hidden relative h-[500px]">
-                  <WarrantyChatBox onWarrantyDataDetected={handleWarrantyDataDetected} />
-                </div>
+              <div className="lg:w-[400px]">
+                <WarrantyChatBox
+                  product={product}
+                  onWarrantyDataDetected={handleWarrantyDataDetected}
+                />
               </div>
             </div>
           </div>

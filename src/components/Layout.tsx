@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, Package, Settings, Search, Plus, MenuIcon, X, Bot } from 'lucide-react';
@@ -46,7 +45,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex">
       {/* Mobile header */}
       {isMobile && (
         <header className="fixed top-0 inset-x-0 h-16 z-50 glass border-b flex items-center justify-between px-4">
@@ -76,7 +75,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* Sidebar for desktop / Mobile menu */}
       <aside 
         className={`
-          ${isMobile ? 'fixed right-0 top-0 h-full z-50 w-64 translate-x-full shadow-xl' : 'w-64 border-r'} 
+          ${isMobile ? 'fixed left-0 top-0 h-full z-50 w-64 -translate-x-full shadow-xl' : 'w-64 border-r min-h-screen'} 
           ${mobileMenuOpen && isMobile ? 'translate-x-0' : ''} 
           bg-sidebar border-sidebar-border transition-transform duration-300 ease-in-out
         `}

@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { 
   Package, Clock, AlertTriangle, CheckCircle, 
   ChevronRight, Calendar, Plus, Search
@@ -18,6 +17,7 @@ const Index: React.FC = () => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // In a real app, fetch from API
@@ -148,6 +148,7 @@ const Index: React.FC = () => {
               <Button
                 className="mt-4 md:mt-0"
                 size="sm"
+                onClick={() => navigate(`/app/warranty/details/${nextExpiring.id}`)}
               >
                 View Details
               </Button>

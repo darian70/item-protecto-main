@@ -8,6 +8,7 @@ import Pricing from "./pages/Pricing";
 import Index from "./pages/Index";
 import Products from "./pages/Products";
 import Details from "./pages/Details";
+import WarrantyDetails from "./pages/WarrantyDetails"; 
 import NotFound from "./pages/NotFound";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
@@ -39,7 +40,9 @@ const App = () => (
           <Route path="/app" element={<Index />} />
           <Route path="/app/products" element={<Products />} />
           <Route path="/app/products/add" element={<Products />} />
+          <Route path="/app/products/:id" element={<Details />} />
           <Route path="/app/details/:id" element={<Details />} />
+          <Route path="/app/warranty/details/:id" element={<WarrantyDetails />} /> 
           <Route path="/app/ai-chat" element={<AiChat />} />
           <Route path="/app/settings" element={<Settings />} />
           

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, AlertCircle } from 'lucide-react';
 import { Input } from "@/components/ui/input";
@@ -204,7 +203,16 @@ const ProductForm: React.FC<ProductFormProps> = ({
             </div>
           </div>
           
-          <WarrantySection />
+          <WarrantySection 
+            onWarrantyChange={(warranty) => {
+              handleInputChange({
+                target: {
+                  name: 'warranty',
+                  value: warranty
+                }
+              } as any);
+            }}
+          />
         </div>
       </div>
       

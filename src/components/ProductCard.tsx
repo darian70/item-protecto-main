@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, ChevronRight, Package, Check, X, AlertCircle } from 'lucide-react';
@@ -62,7 +61,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   return (
     <Link 
-      to={`/app/details/${product.id}`}
+      to={`/app/products/${product.id}`}
       className="block"
     >
       <div className="glass card-hover rounded-xl overflow-hidden">
