@@ -4,34 +4,37 @@ import { Shield, Mail, Lock, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
+import { supabase } from '../utils/supabaseClient';
 
 const SignIn: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // In a real app, this would make an API call to authenticate
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      toast({
-        title: "Success",
-        description: "Successfully signed in!",
-        duration: 3000,
+      const { user, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
-      
-      navigate('/app');
+      const userId = user?.id;
+      if (userId) {
+        navigate('/app/products');
+      } else {
+        if (error) {
+          setError(error.message);
+        } else {
+          alert('Check your email for verification!');
+        }
+      }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to sign in. Please try again.",
-        duration: 3000,
-      });
+      setError(error.message);
     } finally {
       setIsLoading(false);
     }
