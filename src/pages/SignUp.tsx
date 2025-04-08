@@ -4,7 +4,9 @@ import { Shield, Mail, Lock, User, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
-import { supabase } from '../utils/supabaseClient';
+import supabase from '@/utils/supabaseclient.js';
+
+
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
@@ -25,7 +27,7 @@ const SignUp: React.FC = () => {
       });
       const userId = user?.id;
       if (userId) {
-        const { error: insertError } = await supabase.from('users').insert([
+        const { error: insertError } = await supabase.from('User').insert([
           {
             auth_id: userId,
             name: name,

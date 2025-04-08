@@ -4,7 +4,7 @@ import { Shield, Mail, Lock, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
-import { supabase } from '../utils/supabaseClient';
+import supabase from '@/utils/supabaseclient.js';
 
 const SignIn: React.FC = () => {
   const navigate = useNavigate();
@@ -19,18 +19,18 @@ const SignIn: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const { user, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-      const userId = user?.id;
+      const userId = data?.user?.id;
       if (userId) {
         navigate('/app/products');
       } else {
         if (error) {
           setError(error.message);
         } else {
-          alert('Check your email for verification!');
+          navigate('/app/products');
         }
       }
     } catch (error) {
@@ -78,6 +78,8 @@ const SignIn: React.FC = () => {
                     placeholder="Enter your email"
                     className="pl-10"
                     required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
               </div>
@@ -94,6 +96,8 @@ const SignIn: React.FC = () => {
                     placeholder="Enter your password"
                     className="pl-10"
                     required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
               </div>
