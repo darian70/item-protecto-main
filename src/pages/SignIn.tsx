@@ -17,28 +17,57 @@ const SignIn: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-
+    setError(null);
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-      const userId = data?.user?.id;
-      if (userId) {
-        navigate('/app/products');
-      } else {
-        if (error) {
-          setError(error.message);
-        } else {
-          navigate('/app/products');
+      const user = data?.user;
+      if (error) {
+        alert(`Login error: ${error.message}`);
+        setError(error.message);
+        return;
+      }
+      if (!user) {
+        alert("Login failed: No user found");
+        setError("Login failed: No user found");
+        return;
+      }
+      // Check if user already exists in 'User' table
+      const { data: existingUser, error: fetchError } = await supabase
+        .from('User')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+      if (!existingUser) {
+        const { error: insertError } = await supabase.from('User').insert([
+          {
+            id: user.id,
+            name: user.user_metadata?.full_name || 'No name',
+            email: user.email,
+          },
+        ]);
+
+        if (insertError) {
+          setError(insertError.message);
+          return;
         }
       }
-    } catch (error) {
-      setError(error.message);
+      toast({
+        title: "Login Successful",
+        description: `Welcome back, ${user.email}!`,
+      });
+
+      navigate('/app/products');
+    } catch (err: any) {
+      alert(`Unexpected error: ${err.message || err}`);
+      setError(err.message || "Something went wrong");
     } finally {
       setIsLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
