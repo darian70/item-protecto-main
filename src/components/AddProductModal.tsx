@@ -28,7 +28,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ onProductAdded }) => 
     productUrl: '',
     warranty: null as any
   });
-  
+
   const handleClose = () => {
     navigate('/app/products');
   };
@@ -48,7 +48,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ onProductAdded }) => 
       description: "AI has extracted the warranty details",
       duration: 3000,
     });
-    
+
     // Pre-fill form with the AI-extracted data
     setProductFormData(prev => ({
       ...prev,
@@ -61,8 +61,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ onProductAdded }) => 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Convert form data to match Product type
+
     const productData = {
       name: productFormData.name,
       brand: productFormData.brand,
@@ -82,17 +81,18 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ onProductAdded }) => 
         }
       ] : []
     };
-    
-    // Pass the converted data to parent component
-    onProductAdded(productData);
-    
+
+    onProductAdded(productData); // Now productData has `price`
+
     toast({
       title: "Product added",
       description: "Your product has been added successfully.",
       duration: 3000,
     });
+
     navigate('/app/products');
   };
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -114,7 +114,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ onProductAdded }) => 
       retailer: productData.retailer || prev.retailer,
       productUrl: productData.productUrl || prev.productUrl,
     }));
-    
+
     // Move to the details step
     setStep('details');
   };
@@ -125,7 +125,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ onProductAdded }) => 
         <DialogHeader>
           <DialogTitle>Add New Product</DialogTitle>
         </DialogHeader>
-        
+
         {step === 'method' ? (
           <AddMethodSelector
             onManualAdd={handleManualAdd}

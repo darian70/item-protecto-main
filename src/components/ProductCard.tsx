@@ -11,8 +11,8 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   // Get the status of the most recent warranty
   const getOverallStatus = () => {
-    if (product.warranties.length === 0) return 'unknown';
-    
+    if (!product.warranties || product.warranties.length === 0) return 'unknown';
+
     const statuses = product.warranties.map(w => getWarrantyStatus(w.endDate));
     if (statuses.includes('expired')) {
       return 'expired';
@@ -23,31 +23,41 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     }
   };
 
+
   const productStatus = getOverallStatus();
-  
+
   // Format purchase date
-  const formatDate = (date: Date) => {
+  const formatDate = (date: Date | string | null | undefined) => {
+    const parsedDate = typeof date === 'string' ? new Date(date) : date;
+
+    if (!parsedDate || isNaN(new Date(parsedDate).getTime())) {
+      return 'Invalid date';
+    }
+
     return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
-    }).format(date);
+    }).format(parsedDate);
   };
+
 
   // Get the most recent valid warranty end date
   const getNextExpiryDate = () => {
-    const validWarranties = product.warranties
+    const warranties = product.warranties ?? []; // Fallback to empty array
+    const validWarranties = warranties
       .filter(w => getWarrantyStatus(w.endDate) !== 'expired')
       .sort((a, b) => a.endDate.getTime() - b.endDate.getTime());
-    
+
     return validWarranties.length > 0 ? validWarranties[0].endDate : null;
   };
+
 
   const nextExpiry = getNextExpiryDate();
 
   // Status icon based on warranty status
   const StatusIcon = () => {
-    switch(productStatus) {
+    switch (productStatus) {
       case 'active':
         return <Check className="w-4 h-4 text-green-500" />;
       case 'expiring':
@@ -60,16 +70,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
 
   return (
-    <Link 
+    <Link
       to={`/app/products/${product.id}`}
       className="block"
     >
       <div className="glass card-hover rounded-xl overflow-hidden">
         <div className="aspect-square bg-muted relative">
           {product.imageUrl ? (
-            <img 
-              src={product.imageUrl} 
-              alt={product.name} 
+            <img
+              src={product.imageUrl}
+              alt={product.name}
               className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
               loading="lazy"
             />
@@ -81,9 +91,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <div className="absolute top-3 right-3">
             <div className={`
               flex items-center px-2 py-1 rounded-full text-xs font-medium
-              ${productStatus === 'active' ? 'bg-green-100 text-green-800' : 
+              ${productStatus === 'active' ? 'bg-green-100 text-green-800' :
                 productStatus === 'expiring' ? 'bg-amber-100 text-amber-800' :
-                'bg-red-100 text-red-800'}
+                  'bg-red-100 text-red-800'}
             `}>
               <StatusIcon />
               <span className="ml-1 capitalize">{productStatus}</span>
@@ -109,15 +119,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </div>
           )}
           <div className="mt-3 flex items-center gap-1">
-            {product.warranties.map((warranty, index) => (
-              <div 
+            {(product.warranties ?? []).map((warranty, index) => (
+              <div
                 key={warranty.id}
                 className={`
-                  h-1.5 flex-1 rounded-full 
-                  ${getWarrantyStatus(warranty.endDate) === 'active' ? 'bg-green-500' : 
-                    getWarrantyStatus(warranty.endDate) === 'expiring' ? 'bg-amber-500' : 
-                    'bg-red-500'}
-                `}
+        h-1.5 flex-1 rounded-full 
+        ${getWarrantyStatus(warranty.endDate) === 'active' ? 'bg-green-500' :
+                    getWarrantyStatus(warranty.endDate) === 'expiring' ? 'bg-amber-500' :
+                      'bg-red-500'}
+      `}
               />
             ))}
           </div>

@@ -1,38 +1,53 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Package, Grid3X3, List, Plus } from 'lucide-react';
 import Layout from '@/components/Layout';
 import ProductCard from '@/components/ProductCard';
 import { Product, Category } from '@/lib/types';
-import { mockProducts, categoryIcons } from '@/lib/mockData';
+import { categoryIcons } from '@/lib/mockData';
 import { useIsMobile } from '@/hooks/use-mobile';
 import SearchBar from '@/components/SearchBar';
 import { Button } from "@/components/ui/button";
 import AddProductModal from '@/components/AddProductModal';
+import supabase from '@/utils/supabaseclient.js';
+import { v4 as uuidv4 } from 'uuid';
+
 
 const Products: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isMobile = useIsMobile();
+
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<Category | 'all'>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-
-  // State for modal visibility
   const [showAddModal, setShowAddModal] = useState(false);
-  
-  // Handle modal visibility based on route
+
   useEffect(() => {
     setShowAddModal(location.pathname === '/app/products/add');
   }, [location.pathname]);
 
+  // ✅ Fetch products from Supabase
   useEffect(() => {
-    // In a real app, fetch from API
-    setProducts(mockProducts);
-    setFilteredProducts(mockProducts);
+    const fetchProducts = async () => {
+      const { data, error } = await supabase
+        .from('Product')
+        .select('*');
+
+      if (error) {
+        console.error("Failed to fetch products:", error.message);
+        return;
+      }
+
+      if (data) {
+        setProducts(data);
+        setFilteredProducts(data);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
   const handleSearch = (query: string) => {
@@ -47,23 +62,21 @@ const Products: React.FC = () => {
 
   const filterProducts = (query: string, category: Category | 'all') => {
     let filtered = products;
-    
-    // Filter by category
+
     if (category !== 'all') {
       filtered = filtered.filter(p => p.category === category);
     }
-    
-    // Filter by search query
+
     if (query.trim()) {
       const lowerQuery = query.toLowerCase();
       filtered = filtered.filter(
-        product => 
+        product =>
           product.name.toLowerCase().includes(lowerQuery) ||
           product.brand.toLowerCase().includes(lowerQuery) ||
           product.model.toLowerCase().includes(lowerQuery)
       );
     }
-    
+
     setFilteredProducts(filtered);
   };
 
@@ -71,7 +84,6 @@ const Products: React.FC = () => {
     setViewMode(viewMode === 'grid' ? 'list' : 'grid');
   };
 
-  // Get categories from products for the filter
   const getCategories = (): Category[] => {
     const categories = new Set<Category>();
     products.forEach(p => {
@@ -90,7 +102,7 @@ const Products: React.FC = () => {
           <div className="w-full md:w-64">
             <SearchBar onSearch={handleSearch} />
           </div>
-          
+
           <div className="flex items-center space-x-2 self-end">
             <Button
               variant={viewMode === 'grid' ? 'default' : 'outline'}
@@ -119,30 +131,30 @@ const Products: React.FC = () => {
             </Button>
           </div>
         </div>
-        
+
         {/* Category filters */}
         <div className="flex overflow-x-auto pb-2 scrollbar-hide gap-2 md:flex-wrap">
           <button
             onClick={() => handleCategoryChange('all')}
             className={`
               flex items-center px-3 py-1.5 rounded-full text-sm whitespace-nowrap
-              ${selectedCategory === 'all' 
-                ? 'bg-primary text-primary-foreground' 
+              ${selectedCategory === 'all'
+                ? 'bg-primary text-primary-foreground'
                 : 'bg-muted text-muted-foreground hover:bg-muted/80'}
             `}
           >
             <Package className="w-3.5 h-3.5 mr-1.5" />
             All Items
           </button>
-          
+
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => handleCategoryChange(category)}
               className={`
                 flex items-center px-3 py-1.5 rounded-full text-sm whitespace-nowrap
-                ${selectedCategory === category 
-                  ? 'bg-primary text-primary-foreground' 
+                ${selectedCategory === category
+                  ? 'bg-primary text-primary-foreground'
                   : 'bg-muted text-muted-foreground hover:bg-muted/80'}
               `}
             >
@@ -151,13 +163,13 @@ const Products: React.FC = () => {
             </button>
           ))}
         </div>
-        
+
         {/* Products grid/list */}
         {filteredProducts.length === 0 ? (
           <div className="glass rounded-xl p-8 text-center">
             <p className="text-muted-foreground mb-4">No products found</p>
             {searchQuery || selectedCategory !== 'all' ? (
-              <Button 
+              <Button
                 onClick={() => {
                   setSearchQuery('');
                   setSelectedCategory('all');
@@ -188,37 +200,53 @@ const Products: React.FC = () => {
           </div>
         )}
       </div>
-      
+
+      {/* ✅ Insert product into Supabase on modal submit */}
       {showAddModal && (
         <AddProductModal
-          onProductAdded={(newProduct) => {
-            // Extract warranty information from the description if it exists
-            const warrantyInfo = newProduct.description?.match(/Warranty Length: (.*?)\n\nWarranty Details: (.*)/);
-            const productWithId: Product = {
-              ...newProduct,
-              id: (products.length + 1).toString(),
-              warranties: warrantyInfo ? [{
-                id: `w${products.length + 1}`,
-                type: 'manufacturer',
-                provider: newProduct.brand || 'Unknown',
-                startDate: newProduct.purchaseDate,
-                endDate: (() => {
-                  const endDate = new Date(newProduct.purchaseDate);
-                  const length = warrantyInfo[1];
-                  const years = length.match(/(\d+)\s*years?/i);
-                  const months = length.match(/(\d+)\s*months?/i);
-                  if (years) endDate.setFullYear(endDate.getFullYear() + parseInt(years[1]));
-                  if (months) endDate.setMonth(endDate.getMonth() + parseInt(months[1]));
-                  return endDate;
-                })(),
-                coverageDetails: warrantyInfo[2],
-                contactInfo: {}
-              }] : []
+
+
+          onProductAdded={async (newProduct) => {
+
+            const { data: { user } } = await supabase.auth.getUser();
+
+
+            const productToInsert = {
+              id: uuidv4(), // required
+              name: newProduct.name,
+              description: newProduct.description || '',
+              purchaseDate: newProduct.purchaseDate, // required
+              price: newProduct.purchasePrice,
+              imageUrl: newProduct.imageUrl || null,
+              userId: user.id, // supabase.auth.getUser()?.data.user?.id, // required
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
             };
-            const updatedProducts = [...products, productWithId];
-            setProducts(updatedProducts);
-            setFilteredProducts(updatedProducts);
+
+            console.log("🟡 Product to insert:", productToInsert);
+
+            const { data, error } = await supabase
+              .from('Product')
+              .insert([productToInsert])
+              .select();
+
+            if (error) {
+              console.error("❌ Supabase insert error:", error.message);
+              return;
+            }
+
+            console.log("✅ Product inserted:", data);
+
+            if (data) {
+              const addedProduct = data[0];
+              setProducts(prev => [...prev, addedProduct]);
+              setFilteredProducts(prev => [...prev, addedProduct]);
+            }
           }}
+
+
+
+
         />
       )}
     </Layout>
