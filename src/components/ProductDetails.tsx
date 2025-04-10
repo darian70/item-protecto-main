@@ -1,4 +1,4 @@
-                 import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Calendar, Clock, DollarSign, MapPin, Package,
@@ -18,16 +18,21 @@ interface ProductDetailsProps {
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const navigate = useNavigate();
-  const [warranties, setWarranties] = useState<Warranty[]>(product.warranties);
-  
-  const formatDate = (date: Date) => {
+  const [warranties, setWarranties] = useState<Warranty[]>(product.warranties ?? []);
+
+
+  const formatDate = (date: Date | string) => {
+    const parsedDate = new Date(date);
+    if (isNaN(parsedDate.getTime())) return 'Invalid Date';
+
     return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
-    }).format(date);
+    }).format(parsedDate);
   };
-  
+
+
   const formatCurrency = (amount?: number) => {
     if (amount === undefined) return 'N/A';
     return new Intl.NumberFormat('en-US', {
@@ -60,7 +65,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
       duration: 3000,
     });
   };
-  
+
   const handleEditClick = () => {
     toast({
       title: "Edit mode",
@@ -68,7 +73,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
       duration: 3000,
     });
   };
-  
+
   const handleDeleteClick = () => {
     toast({
       title: "Delete confirmation",
@@ -76,7 +81,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
       duration: 3000,
     });
   };
-  
+
   const handleDownloadWarranty = (warranty: Warranty) => {
     toast({
       title: "Warranty document",
@@ -84,7 +89,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
       duration: 3000,
     });
   };
-  
+
   return (
     <div className="animate-fade-in flex flex-col">
       <div className="flex-1">
@@ -94,9 +99,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
               <div className="glass rounded-xl overflow-hidden">
                 {product.imageUrl ? (
                   <div className="aspect-w-1 aspect-h-1">
-                    <img 
-                      src={product.imageUrl} 
-                      alt={product.name} 
+                    <img
+                      src={product.imageUrl}
+                      alt={product.name}
                       className="object-cover"
                     />
                   </div>
@@ -105,35 +110,35 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                     <Package className="w-12 h-12 text-muted-foreground/50" />
                   </div>
                 )}
-                
+
                 <div className="p-4">
                   <h1 className="text-xl font-semibold">{product.name}</h1>
                   <p className="text-muted-foreground">{product.brand} • {product.model}</p>
-                  
+
                   {product.description && (
                     <p className="mt-3 text-sm">{product.description}</p>
                   )}
-                  
+
                   <div className="mt-4 space-y-2 text-sm">
                     <div className="flex items-center">
                       <Calendar className="w-4 h-4 mr-2 text-muted-foreground" />
                       <span>Purchased on {formatDate(product.purchaseDate)}</span>
                     </div>
-                    
+
                     {product.retailer && (
                       <div className="flex items-center">
                         <MapPin className="w-4 h-4 mr-2 text-muted-foreground" />
                         <span>From {product.retailer}</span>
                       </div>
                     )}
-                    
+
                     {product.purchasePrice !== undefined && (
                       <div className="flex items-center">
                         <DollarSign className="w-4 h-4 mr-2 text-muted-foreground" />
                         <span>{formatCurrency(product.purchasePrice)}</span>
                       </div>
                     )}
-                    
+
                     {product.serialNumber && (
                       <div className="flex items-center">
                         <Package className="w-4 h-4 mr-2 text-muted-foreground" />
@@ -141,7 +146,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                       </div>
                     )}
                   </div>
-                  
+
                   <div className="mt-6 flex space-x-2">
                     <Button
                       onClick={handleEditClick}
@@ -151,7 +156,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                       <Edit className="w-4 h-4 mr-2" />
                       Edit
                     </Button>
-                    
+
                     <Button
                       onClick={handleDeleteClick}
                       variant="outline"
@@ -163,7 +168,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                 </div>
               </div>
             </div>
-            
+
             <div className="lg:col-span-8 flex flex-col lg:flex-row gap-8 mt-8">
               <div className="flex-1 flex flex-col">
                 <div className="glass rounded-xl p-6">
@@ -171,7 +176,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                     <Clock className="w-5 h-5 text-primary" />
                     Warranty Information
                   </h2>
-                  
+
                   <div className="space-y-4">
                     {warranties.length === 0 ? (
                       <div className="glass rounded-xl p-6 text-center mt-4">
@@ -186,7 +191,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                               glass rounded-xl overflow-hidden transition-all h-full
                               ${getWarrantyStatus(warranty.endDate) === 'active' ? 'border-l-4 border-l-green-500' :
                                 getWarrantyStatus(warranty.endDate) === 'expiring' ? 'border-l-4 border-l-amber-500' :
-                                'border-l-4 border-l-red-500'}
+                                  'border-l-4 border-l-red-500'}
                             `}
                           >
                             <div className="p-4 h-full flex flex-col min-h-[280px]">
@@ -209,7 +214,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                                   <Download className="w-4 h-4" />
                                 </Button>
                               </div>
-                              
+
                               <div className="flex-1">
                                 <div className="space-y-4">
                                   {warranty.coverageDetails && (
@@ -223,7 +228,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                                       </p>
                                     </div>
                                   )}
-                                  
+
                                   <div>
                                     <h4 className="text-sm font-medium mb-2">Contact Information</h4>
                                     <div className="space-y-2">
@@ -235,7 +240,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                                           </a>
                                         </div>
                                       )}
-                                      
+
                                       {warranty.contactInfo.email && (
                                         <div className="flex items-center text-sm">
                                           <Mail className="w-4 h-4 mr-2 text-muted-foreground" />
@@ -244,7 +249,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                                           </a>
                                         </div>
                                       )}
-                                      
+
                                       {warranty.contactInfo.website && (
                                         <div className="flex items-center text-sm">
                                           <Globe className="w-4 h-4 mr-2 text-muted-foreground" />
@@ -265,7 +270,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="lg:w-[400px]">
                 <WarrantyChatBox
                   product={product}

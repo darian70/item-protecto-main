@@ -7,24 +7,46 @@ import ProductDetails from '@/components/ProductDetails';
 import { Product } from '@/lib/types';
 import { mockProducts } from '@/lib/mockData';
 import { Button } from "@/components/ui/button";
+import supabase from '@/utils/supabaseclient.js';
 
 const Details: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
-  
+
+  // useEffect(() => {
+  //   // In a real app, fetch from API
+  //   const foundProduct = mockProducts.find(p => p.id === id);
+  //   setProduct(foundProduct || null);
+  //   setLoading(false);
+  // }, [id]);
+
   useEffect(() => {
-    // In a real app, fetch from API
-    const foundProduct = mockProducts.find(p => p.id === id);
-    setProduct(foundProduct || null);
-    setLoading(false);
+    const fetchProduct = async () => {
+      const { data, error } = await supabase
+        .from('Product')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) {
+        console.error('Error fetching product:', error.message);
+        setProduct(null);
+      } else {
+        setProduct(data);
+      }
+
+      setLoading(false);
+    };
+
+    if (id) fetchProduct();
   }, [id]);
-  
+
   const handleBack = () => {
     navigate(-1);
   };
-  
+
   if (loading) {
     return (
       <Layout>
@@ -34,7 +56,7 @@ const Details: React.FC = () => {
       </Layout>
     );
   }
-  
+
   if (!product) {
     return (
       <Layout>
@@ -47,7 +69,7 @@ const Details: React.FC = () => {
             <ChevronLeft className="w-4 h-4 mr-1" />
             Back
           </Button>
-          
+
           <div className="glass rounded-xl p-8 text-center">
             <h2 className="text-lg font-medium mb-2">Product Not Found</h2>
             <p className="text-muted-foreground mb-4">The product you're looking for doesn't exist or has been removed.</p>
@@ -59,7 +81,7 @@ const Details: React.FC = () => {
       </Layout>
     );
   }
-  
+
   return (
     <Layout>
       <div className="space-y-6">
@@ -71,7 +93,7 @@ const Details: React.FC = () => {
           <ChevronLeft className="w-4 h-4 mr-1" />
           Back
         </Button>
-        
+
         <ProductDetails product={product} />
       </div>
     </Layout>
